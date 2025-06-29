@@ -30,11 +30,3 @@ Matplotlib, Seaborn
 
 
 ---
-
-📂 Project Structure
-
-spotify_project/ ├── spotify.py             
- # Main Python Script ├── SpotifyFeatures.csv  
- # Dataset ├── k_vs_silhouette.png     
- # Clustering Evaluation Plot └── README.md               
- # Project Info
