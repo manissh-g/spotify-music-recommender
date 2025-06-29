@@ -11,7 +11,7 @@ warnings.filterwarnings("ignore")
 # Load the dataset
 try:
     df = pd.read_csv("SpotifyFeatures.csv")
-    print("✅ Dataset loaded successfully.")
+    print(" Dataset loaded successfully.")
 except FileNotFoundError:
     print("❌ ERROR: SpotifyFeatures.csv not found.")
     exit()
@@ -34,7 +34,7 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
 # KMeans Clustering
-print("\n🔍 Finding the best K for KMeans...")
+print("\n Finding the best K for KMeans...")
 silhouette_scores = []
 K_range = range(2, 11)
 
@@ -46,7 +46,7 @@ for k in K_range:
     silhouette_scores.append(score)
 
 best_k = K_range[silhouette_scores.index(max(silhouette_scores))]
-print(f"\n✅ Best K found: {best_k}")
+print(f"\n Best K found: {best_k}")
 
 kmeans = KMeans(n_clusters=best_k, random_state=42)
 df['KMeans_Cluster'] = kmeans.fit_predict(X_scaled)
@@ -62,12 +62,12 @@ plt.tight_layout()
 plt.savefig("k_vs_silhouette.png")
 
 # DBSCAN Clustering
-print("\n📦 Running DBSCAN...")
+print("\n Running DBSCAN...")
 dbscan = DBSCAN(eps=1.5, min_samples=10)
 df['DBSCAN_Cluster'] = dbscan.fit_predict(X_scaled)
 
 # Evaluation
-print("\n📊 Evaluation Metrics:")
+print("\n Evaluation Metrics:")
 print(f"KMeans Silhouette Score     : {silhouette_score(X_scaled, df['KMeans_Cluster']):.4f}")
 print(f"KMeans Davies-Bouldin Score : {davies_bouldin_score(X_scaled, df['KMeans_Cluster']):.4f}")
 print(f"DBSCAN Davies-Bouldin Score : {davies_bouldin_score(X_scaled, df['DBSCAN_Cluster']):.4f}")
@@ -85,9 +85,9 @@ def recommend_song(song_name, cluster_type='KMeans_Cluster', top_n=5):
     if matches.empty:
         suggestions = df[df['track_name'].str.contains(song_name[:4], case=False, na=False)]
         if not suggestions.empty:
-            print("\n🤔 Did you mean one of these?")
+            print("\n Did you mean one of these?")
             print(suggestions['track_name'].unique()[:5])
-        return f"❌ Song '{song_name}' not found in dataset."
+        return f" Song '{song_name}' not found in dataset."
 
     song_row = matches.iloc[0]
     cluster_id = song_row[cluster_type]
@@ -103,7 +103,7 @@ def recommend_song(song_name, cluster_type='KMeans_Cluster', top_n=5):
     return candidates.sample(n=min(top_n, len(candidates))).reset_index(drop=True)
 
 # Show matching songs
-print("\n🎯 Search Results for 'shape':")
+print("\n Search Results for 'shape':")
 print(search_song("shape"))
 
 # User Input
